@@ -1,11 +1,10 @@
-const path = require('path');
-const getpath = (dir) => path.resolve(__dirname, dir);
+const path = require('path')
+const getpath = (dir) => path.resolve(__dirname, dir)
 module.exports = {
-  webpack:{
+  webpack: {
     //配置别名
-    alias:{
-      '@':getpath('src')
+    alias: {
+      '@': getpath('src')
     }
   }
-  
-};
+}

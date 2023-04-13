@@ -1,9 +1,5 @@
 import React, { memo } from 'react'
 
 export default memo(function App() {
-  return (
-    <div>
-      showme
-    </div>
-  )
+  return <div>showme</div>
 })
