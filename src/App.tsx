@@ -18,7 +18,7 @@ export default memo(function App() {
       {/* 因为路由会进行懒加载，所以使用suspense对其进行包裹 */}
       {/* <div className='main'>{useRoutes(routes)}</div> */}
 
-      <Suspense fallback={'loadi11111111111111111111111111111ng...'}>
+      <Suspense fallback={'loading...'}>
         <div className='main'>{useRoutes(routes)}</div>
       </Suspense>
 
