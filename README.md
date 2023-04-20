@@ -1,46 +1,70 @@
-# Getting Started with Create React App
+# `background` [链接](https://baidu.com)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 1. `类组件/函数式组件`和 TS 结合的类型约束
 
-## Available Scripts
+```javascript
+//---------------------函数式组件----------------------
 
-In the project directory, you can run:
 
-### `npm start`
+//定义props的类型
+{/* 在组件里面传东西，会传入到props.children里面去，但是需要你自己定义children属性 */}
+interface IProps{
+  children?:React.ReactNode
+}
+//在函数式组件中使用,其中的props的类型就是IProps
+function App：React.FC<IProps>(props){
+  return ();
+}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+//---------------------类组件----------------------
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+//定义class中state的类型结构
+interface IState {
+  name: string
+}
+interface ISnapshot {
+  name: string
+}
+class App3 extends React.PureComponent<IProps, IState, ISnapshot>{
+  //一般可以直接这样写state
+  state = {
+    name: 'lnl-showme'
+  }
+  render(): React.ReactNode {
+    return (
+      <div>{this.state.name}</div>
+    );
+  }
+  //组件更新之前，保存原始的数据
+  getSnapshotBeforeUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>): ISnapshot | null {
+    return { name: 'lnl' }
+  }
+  componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: ISnapshot | undefined): void {
+      //在这里面可以通过snapshot得到更新前的数据
+  }
+}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2.redux——useSelector 和 ts 结合的类型约束
 
-### `npm run eject`
+```js
+import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux'
+//避免使用useSelector的时候找不到值的情况
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+//1.这样也可以得到state的类型
+const state = store.getState()
+type IRootState2 = typeof state;
+//2.ReturnType用于获取函数的返回值的类型
+export type IRootState = ReturnType<typeof store.getState>
+export const useAppSelector: TypedUseSelectorHook<IRootState> = useSelector
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+//因为store.dispatch是直接使用的所以不需要返回值
+type DispatchType = typeof store.dispatch
+export const useAppDispatch: () => DispatchType = useDispatch
+```

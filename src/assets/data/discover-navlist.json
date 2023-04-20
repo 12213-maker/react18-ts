@@ -1,0 +1,26 @@
+[
+  {
+    "to": "/discover/recommend",
+    "title": "推荐"
+  },
+  {
+    "to": "/discover/ranking",
+    "title": "排行榜"
+  },
+  {
+    "to": "/discover/songs",
+    "title": "歌单"
+  },
+  {
+    "to": "/discover/djradio",
+    "title": "主播电台"
+  },
+  {
+    "to": "/discover/artist",
+    "title": "歌手"
+  },
+  {
+    "to": "/discover/album",
+    "title": "新碟上架"
+  }
+]

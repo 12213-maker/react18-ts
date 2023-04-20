@@ -1,28 +1,32 @@
 import React, { memo, Suspense } from 'react'
-import { useRoutes, Link } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import routes from './router'
-import Focus from './views/focus'
+import Header from './components/app-header'
+import AppFooter from './components/app-footer'
+import { ThemeProvider } from 'styled-components'
+import theme from './assets/theme'
+import { useAppSelector } from './store'
+import {ThemeColor} from '@/assets/data/local_data'
+
+
+
 export default memo(function App() {
+
+  const state = useAppSelector(state=>state.theme.activeTheme);
+  const color = ThemeColor[state];
+
+
   return (
+    <ThemeProvider theme={{...theme,color}}>
     <div className='App'>
-      {/* 在组件里面传东西，会传入到props.children里面去，但是需要你自己定义children属性 */}
-
-
-      <div className='nav'>
-        <Link to='/discover' >发现音乐</Link>
-        <Link to='/mine' >我的音乐</Link>
-        <Link to='/focus' >关注</Link>
-        <Link to='/download' >下载客户端</Link>
-      </div>
-
-      {/* 因为路由会进行懒加载，所以使用suspense对其进行包裹 */}
-      {/* <div className='main'>{useRoutes(routes)}</div> */}
-
+      <Header></Header>
       <Suspense fallback={'loading...'}>
         <div className='main'>{useRoutes(routes)}</div>
       </Suspense>
-
-
+      <AppFooter></AppFooter>
     </div>
+    </ThemeProvider>
+
   )
 })
+
